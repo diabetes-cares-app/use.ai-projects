@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inicio — BNA</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: #dfe3e8; color: #26313d;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    padding: 24px 12px 60px;
+  }
+  .wrap { max-width: 420px; margin: 0 auto; }
+  .panel {
+    background: #fff; border-radius: 14px; padding: 18px 16px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08); margin-bottom: 20px;
+  }
+  .panel h2 { margin: 0 0 16px; font-size: 16px; font-weight: 700; text-align: center; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label {
+    font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+    color: #6b7280; font-weight: 600;
+  }
+  .field input, .field select {
+    width: 100%; padding: 10px 11px; border: 1px solid #d3d7dd; border-radius: 9px;
+    font-size: 14px; font-family: inherit; color: #111; background: #fbfcfd;
+  }
+  .field input:focus, .field select:focus {
+    outline: none; border-color: #f26a1b; background: #fff;
+    box-shadow: 0 0 0 3px rgba(242,106,27,.12);
+  }
+  .field input.big { font-size: 20px; font-weight: 700; }
+  .preview-btn {
+    width: 100%; margin-top: 18px; padding: 14px; border: 0; border-radius: 10px;
+    background: #f26a1b; color: #fff; font-size: 15px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+  }
+  .preview-btn:active { background: #d95a12; }
+  .hint { font-size: 11.5px; color: #7a828d; margin: 10px 0 0; line-height: 1.45; }
+
+  /* ---------- PHONE ---------- */
+  .phone {
+    --brand: #f26a1b;
+    background: #f4f4f6; border-radius: 26px; overflow: hidden;
+    box-shadow: 0 6px 22px rgba(0,0,0,.18);
+    display: flex; flex-direction: column; height: 780px;
+  }
+
+  .hero {
+    position: relative; flex: 0 0 auto; overflow: hidden;
+    background: linear-gradient(160deg, #ff6a12 0%, #f4620b 55%, #e8560a 100%);
+    padding-bottom: 26px;
+  }
+  .blob {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    background: rgba(255,255,255,.06);
+  }
+  .blob.b1 { width: 300px; height: 300px; right: -110px; top: -90px; }
+  .blob.b2 { width: 190px; height: 190px; left: -70px; top: 120px; background: rgba(255,255,255,.05); }
+  .blob.b3 { width: 240px; height: 240px; right: -60px; top: 260px; background: rgba(0,0,0,.05); }
+
+  .statusbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px 4px; font-size: 15px; font-weight: 600; color: #1b1b1b;
+    position: relative;
+  }
+  .statusbar .right { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+  .battery { display: flex; align-items: center; gap: 3px; }
+  .battery .shell {
+    width: 24px; height: 12px; border: 1.5px solid #1b1b1b; border-radius: 3.5px;
+    padding: 1.5px; position: relative;
+  }
+  .battery .shell::after {
+    content: ""; position: absolute; right: -4px; top: 3.5px;
+    width: 2px; height: 4px; background: #1b1b1b; border-radius: 0 1px 1px 0;
+  }
+  .battery .fill { width: 100%; height: 100%; background: #1b1b1b; border-radius: 2px; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 18px 0; position: relative;
+  }
+  .logo-c {
+    width: 38px; height: 38px; border-radius: 50%; background: #fff;
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .logo-c i { position: absolute; background: #f4620b; display: block; border-radius: 2px; }
+  .logo-c .v { width: 5px; height: 24px; top: 7px; left: 16.5px; border-radius: 3px; }
+  .logo-c .h { width: 15px; height: 5px; top: 12px; left: 11.5px; border-radius: 3px; }
+  .topicons { display: flex; align-items: center; gap: 20px; }
+  .topicons svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .bellwrap { position: relative; }
+  .bellwrap .dot {
+    position: absolute; right: -1px; top: -1px; width: 11px; height: 11px;
+    border-radius: 50%; background: #fff; border: 2.4px solid #f4620b;
+  }
+
+  .herobody { text-align: center; padding: 20px 22px 0; position: relative; }
+  .go-btn {
+    background: #fff; color: #e8560a; border: 0; border-radius: 24px;
+    padding: 13px 32px; font-family: inherit; font-size: 16px; font-weight: 700;
+    cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  }
+  .acct-kind { color: #fff; font-size: 17px; font-weight: 600; margin: 20px 0 6px; }
+  .bigamount {
+    color: #fff; font-weight: 400; display: inline-flex; align-items: flex-start;
+    letter-spacing: -.5px; margin-bottom: 12px; line-height: 1;
+  }
+  .bigamount .cur { font-size: 40px; }
+  .bigamount .num { font-size: 44px; }
+  .bigamount .dec { font-size: 24px; transform: translateY(-10px); font-weight: 400; }
+  .acctnum {
+    color: #fff; font-size: 16px; display: inline-flex; align-items: center; gap: 7px;
+    margin-bottom: 26px;
+  }
+  .acctnum svg { width: 17px; height: 17px; fill: #fff; }
+
+  .actions { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; padding: 0 12px; }
+  .act { text-align: center; }
+  .act .circle {
+    width: 58px; height: 58px; border-radius: 50%; background: rgba(150,55,10,.45);
+    margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;
+  }
+  .act .circle svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .act .usd { color: #fff; font-size: 15px; font-weight: 700; }
+  .act .lbl { color: #fff; font-size: 12.5px; line-height: 1.25; }
+  .act .lbl span { display: block; }
+
+  .dots { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 22px 0 20px; position: relative; }
+  .dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.55); display: block; }
+  .dots i.on { width: 30px; height: 9px; border-radius: 5px; background: #fff; }
+
+  .below { background: #f4f4f6; flex: 1 1 auto; overflow-y: auto; padding: 22px 16px 0; }
+  .below::-webkit-scrollbar { width: 0; }
+  .secrow {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    font-size: 25px; font-weight: 800; color: #111;
+  }
+  .secrow .arrow { color: #111; }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dcard {
+    border-radius: 14px; min-height: 122px; position: relative; overflow: hidden;
+    background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.07);
+  }
+  .dcard.orange { background: #f4620b; }
+  .dcard .txt {
+    position: absolute; left: 14px; top: 14px; font-size: 17px; font-weight: 700;
+    color: #111; line-height: 1.2; z-index: 2;
+  }
+  .dcard.orange .txt { color: #fff; }
+  .dcard .art {
+    position: absolute; right: -14px; bottom: -10px; width: 92px; height: 92px;
+    border-radius: 50% 0 0 0; background: rgba(255,255,255,.85);
+  }
+  .dcard .sheet {
+    position: absolute; right: 18px; bottom: 22px; width: 40px; height: 46px;
+    background: #fdf4e3; border-radius: 4px; z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,.14);
+  }
+  .dcard .sheet::before {
+    content: ""; position: absolute; right: 0; top: 0; width: 15px; height: 15px;
+    background: #f4620b; border-radius: 0 4px 0 4px;
+  }
+  .dcard .ico {
+    position: absolute; right: 20px; bottom: 24px; z-index: 2;
+    width: 46px; height: 46px; border-radius: 50%; background: #fde4d3;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dcard .ico svg { width: 24px; height: 24px; stroke: #f4620b; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .homebar { height: 26px; display: flex; align-items: center; justify-content: center; background: #f4f4f6; flex: 0 0 auto; }
+  .homebar i { width: 118px; height: 5px; border-radius: 3px; background: #111; display: block; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="panel">
+    <h2>Datos de la pantalla</h2>
+    <div class="grid">
+      <div class="field full">
+        <label for="tipoCuenta">Tipo de cuenta</label>
+        <input id="tipoCuenta" value="Caja de ahorro en pesos">
+      </div>
+      <div class="field">
+        <label for="saldoEnt">Saldo entero</label>
+        <input id="saldoEnt" class="big" value="243.375">
+      </div>
+      <div class="field">
+        <label for="saldoDec">Decimales</label>
+        <input id="saldoDec" value="09">
+      </div>
+      <div class="field full">
+        <label for="nroCuenta">N° de cuenta</label>
+        <input id="nroCuenta" value="4043493-0 350-9">
+      </div>
+      <div class="field full">
+        <label for="acceso">Tarjeta de acceso directo</label>
+        <input id="acceso" value="Pagá o">
+      </div>
+    </div>
+    <p class="hint">El primer acceso directo es la tarjeta naranja, el segundo la tarjeta blanca con ícono.</p>
+    <button type="button" class="preview-btn" id="previewBtn">Ver vista previa</button>
+  </div>
+
+  <div class="phone" id="phone">
+    <div class="hero">
+      <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+
+      <div class="statusbar">
+        <span>18:45</span>
+        <span class="right">
+          <svg width="16" height="13" viewBox="0 0 24 20" fill="none" stroke="#1b1b1b" stroke-width="2" stroke-linecap="round">
+            <path d="M2 18v-4M7 18v-8M12 18V6M17 18V3"/>
+          </svg>
+          <svg width="15" height="13" viewBox="0 0 24 20" fill="none" stroke="#1b1b1b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 7c5.5-4.6 14.5-4.6 20 0"/><path d="M5.5 11c3.6-3 9.4-3 13 0"/><path d="M9 15c1.8-1.5 4.2-1.5 6 0"/>
+          </svg>
+          <span class="battery"><span class="shell"><span class="fill"></span></span></span>
+        </span>
+      </div>
+
+      <div class="topbar">
+        <span class="logo-c"><i class="v"></i><i class="h"></i></span>
+        <span class="topicons">
+          <svg viewBox="0 0 24 24"><path d="M1.5 12S5.5 5.5 12 5.5 22.5 12 22.5 12 18.5 18.5 12 18.5 1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v10A1.5 1.5 0 0 1 20 18.5H4A1.5 1.5 0 0 1 2.5 17V7A1.5 1.5 0 0 1 4 5.5z"/><path d="M9.6 9.8a2.4 2.4 0 1 1 3 2.3c-.6.2-1 .8-1 1.4v.3"/><path d="M11.6 16.2h.01"/></svg>
+          <span class="bellwrap">
+            <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+            <span class="dot"></span>
+          </span>
+        </span>
+      </div>
+
+      <div class="herobody">
+        <button type="button" class="go-btn">Ir a Cuentas</button>
+        <p class="acct-kind" id="pTipo">Caja de ahorro en pesos</p>
+        <div class="bigamount">
+          <span class="cur">$</span>
+          <span class="num" id="pSaldo">243.375</span>
+          <span class="dec" id="pDec">09</span>
+        </div>
+        <div class="acctnum">
+          <svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.7 1.2 6.6L12 17.6l-5.9 3.1 1.2-6.6L2.5 9.4l6.6-.9z"/></svg>
+          <span>N° <span id="pNro">4043493-0 350-9</span></span>
+        </div>
+
+        <div class="actions">
+          <div class="act">
+            <div class="circle"><svg viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg></div>
+            <div class="lbl">Transferir</div>
+          </div>
+          <div class="act">
+            <div class="circle"><svg viewBox="0 0 24 24"><path d="M17 7L7 17"/><path d="M15 17H7V9"/></svg></div>
+            <div class="lbl">Ingresar</div>
+          </div>
+          <div class="act">
+            <div class="circle"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="8" cy="10.5" r="1.6"/><path d="M5.5 16c.6-1.5 1.5-2.2 2.5-2.2s1.9.7 2.5 2.2M14 10h5M14 13.5h5"/></svg></div>
+            <div class="lbl"><span>Alias/CBU</span></div>
+          </div>
+          <div class="act">
+            <div class="circle"><span class="usd">US$</span></div>
+            <div class="lbl"><span>Comprar/</span><span>Vender</span></div>
+          </div>
+        </div>
+
+        <div class="dots">
+          <i class="on"></i><i></i><i></i><i></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="below">
+      <div class="secrow"><span>Accesos directos</span><span class="arrow">&#8250;</span></div>
+      <div class="cards">
+        <div class="dcard orange">
+          <span class="txt" id="pAcceso">Pagá o</span>
+          <span class="art"></span>
+          <span class="sheet"></span>
+        </div>
+        <div class="dcard">
+          <span class="ico">
+            <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10.5h19"/><path d="M15.5 15.5h2"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="homebar"><i></i></div>
+  </div>
+
+</div>
+
+<script>
+  var map = { tipoCuenta:'pTipo', saldoEnt:'pSaldo', saldoDec:'pDec', nroCuenta:'pNro', acceso:'pAcceso' };
+  var phone = document.getElementById('phone');
+  var modal = document.getElementById('previewBtn');
+
+  function render() {
+    for (var id in map) {
+      var v = document.getElementById(id).value.trim();
+      document.getElementById(map[id]).textContent = v || '—';
+    }
+  }
+  modal.addEventListener('click', function () {
+    render();
+    phone.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+  document.querySelectorAll('.panel input').forEach(function (el) {
+    el.addEventListener('input', render);
+  });
+  render();
+</script>
+</body>
+</html>
